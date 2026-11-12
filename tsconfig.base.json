@@ -1,0 +1,18 @@
+// system-chronux-plugin/tsconfig.base.json
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowJs": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "lib": ["DOM", "ES2020"],
+    "types": ["node", "react"],
+    "jsx": "react-jsx",
+    "forceConsistentCasingInFileNames": true,
+  }
+}

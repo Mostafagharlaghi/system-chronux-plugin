@@ -1,0 +1,22 @@
+// system-chronux-plugin/tsconfig.json
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "ignoreDeprecations": "6.0",
+    "noEmit": true,
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ]
+  },
+  "include": [
+    "src",
+    "tsup.config.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
