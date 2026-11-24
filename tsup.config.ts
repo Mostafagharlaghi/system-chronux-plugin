@@ -30,6 +30,7 @@ export default defineConfig({
         "framer-motion",
         "react-icons",
         "@dolphin/app-sdk",
+        "@dolphin/app-core",
         "@dolphin/ui",
     ],
 

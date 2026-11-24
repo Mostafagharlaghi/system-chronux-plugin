@@ -1,0 +1,1 @@
+export const BRANCHES_INDEX_ALL = "/v1/branches/index-all";
