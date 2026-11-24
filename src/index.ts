@@ -3,7 +3,7 @@ import {
   type ContentRegistry,
   definePlugin,
   type MenuRegistry,
-  type PermissionService,
+  type AccessControlService,
   type PluginContext,
   type Shell,
   TOKENS,
@@ -37,32 +37,23 @@ export const ChronuxPlugin = definePlugin({
     // Resolve core platform services
     let menuRegistry: MenuRegistry;
     let contentRegistry: ContentRegistry;
+    let accessControl: AccessControlService;
 
     try {
       menuRegistry = ctx.resolve<MenuRegistry>(TOKENS.MenuRegistry);
       contentRegistry = ctx.resolve<ContentRegistry>(TOKENS.ContentRegistry);
+      accessControl = ctx.resolve<AccessControlService>(
+        TOKENS.AccessControlService,
+      );
     } catch (err) {
-      log.error("Failed to resolve essential registries", err);
-      throw new Error("Required registries are not available in PluginContext.");
+      log.error("Failed to resolve essential services", err);
+      throw new Error(
+        "Required registries or access control are not available in PluginContext.",
+      );
     }
 
     const checkAccess = (): boolean => {
-      
-      if (!ACCESS.requiredPermissions || ACCESS.requiredPermissions.length === 1) {
-        return true;
-      }
-
-      try {
-        const permissionService = ctx.resolve<PermissionService>(TOKENS.PermissionService);
-        if (!permissionService) return false;
-
-        return ACCESS.requiredPermissions.every((perm) =>
-          permissionService.hasPermission(perm)
-        );
-      } catch {
-        // در صورت نبود سرویس یا بروز خطا در محیط بدون access-control
-        return false;
-      }
+      return accessControl.canAccess(ACCESS);
     };
 
     const activate = (): boolean => {
@@ -99,8 +90,9 @@ export const ChronuxPlugin = definePlugin({
       group: "apps",
       parentId: SYSTEM_CHRONUX_PARENT_ID,
       icon: LuCalendar,
-      order: 50,
+      order: 84,
       visible: checkAccess,
+      meta: ACCESS,
       command: {
         id: "open-system-chronux",
       },
